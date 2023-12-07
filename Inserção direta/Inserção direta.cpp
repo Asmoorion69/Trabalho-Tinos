@@ -1,14 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 #include <string>
 
-struct Register{
-    std::string codOperation;
-    std::string month;
-};
-void insertSort(std::vector<std::string>& codes){
+void insertionSort(std::vector<std::string>& codes){
     int n = codes.size();
     for(int i = 1; i < n; i++){
         std::string key = codes[i];
@@ -22,62 +17,62 @@ void insertSort(std::vector<std::string>& codes){
     }
 }
 
-void searchCodeInFiles(const std::vector<std::string>& namesFiles/*, const std::string& searchCod*/){
-    std::string nameFile;
-    //bool codFound = false;
-
-    for (const auto& file : namesFiles) {
-        nameFile = file;
-        std::ifstream inputFile(nameFile);
-
-        std::string cod;
-        std::vector<std::string> codes;
-        while (inputFile >> cod){
-            /*if (cod == searchCod){
-                std::cout << "Codigo de operacao encontrado no arquivo: " << nameFile << std::endl << std::endl;
-                codFound = true;
-            }*/
-            if(cod.size() == 10){
-                codes.push_back(cod);
-            }
-        }
-
-        inputFile.close();
-
-        std::sort(codes.begin(), codes.end());
-
-        std::cout << "Codigos ordenados em oredem alfabetica " << nameFile << ":" << std::endl;
-        for(const std::string code : codes){
-            std::cout << code << std::endl;
-        }
-        std::cout << std::endl;
+void printVector(std::vector<std::string>& codes){
+    for(int i = 0; i < codes.size(); i++){
+        std::cout << codes[i] << std::endl;
     }
-
-    /*if (!codFound){
-        std::cout << "Codigo de operacao nao encontrado nos arquivos" << std::endl;
-    }*/
 }
 
 int main(){
-    std::ifstream fileNames("dados.txt");
+    std::string aux;
 
-    std::vector<std::string> namesFiles;
-    std::string nameFile;
-    while (std::getline(fileNames, nameFile)){
-        namesFiles.push_back(nameFile);
-        std::cout << "Arquivo " << nameFile << " adicionado a lista "<< std::endl << std::endl;
+    std::vector<std::string> codesMes1;
+    std::vector<std::string> codesMes2;
+    std::vector<std::string> codesMes3;
+    std::vector<std::string> codesMes4;
+    std::vector<std::string> codesMes5;
+
+    std::ifstream fileName1 ("mes_1.txt");
+    std::ifstream fileName2 ("mes_2.txt");
+    std::ifstream fileName3 ("mes_3.txt");
+    std::ifstream fileName4 ("mes_4.txt");
+    std::ifstream fileName5 ("mes_5.txt");
+
+    while(std::getline(fileName1, aux)){
+        codesMes1.insert(codesMes1.end(), aux);
+    }
+    while(std::getline(fileName2, aux)){
+        codesMes2.insert(codesMes2.end(), aux);
+    }
+    while(std::getline(fileName3, aux)){
+        codesMes3.insert(codesMes3.end(), aux);
+    }
+    while(std::getline(fileName4, aux)){
+        codesMes4.insert(codesMes4.end(), aux);
+    }
+    while(std::getline(fileName5, aux)){
+        codesMes5.insert(codesMes5.end(), aux);
     }
 
-    fileNames.close();
+    insertionSort(codesMes1);
+    insertionSort(codesMes2);
+    insertionSort(codesMes3);
+    insertionSort(codesMes4);
+    insertionSort(codesMes5);
 
-    /*std::string searchCod;
-    std::cout << "Digite o codigo de operacao a ser procurado: ";
-    std::cin >> searchCod;*/
+    printVector(codesMes1);
+    printVector(codesMes2);
+    printVector(codesMes3);
+    printVector(codesMes4);
+    printVector(codesMes5);
 
-    searchCodeInFiles(namesFiles);
+    fileName1.close();
+    fileName2.close();
+    fileName3.close();
+    fileName4.close();
+    fileName5.close();
+
 
     return 0;
 }
-
-
 

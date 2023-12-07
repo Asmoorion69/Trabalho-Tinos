@@ -1,69 +1,76 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 #include <string>
 
-class selection{
-    private:
-    std::vector<std::string> namesFiles;
-
-    void selecSort(std::vector<std::string>& codes){
-        int n = codes.size();
-        for(int i = 0; i < n - 1; i++){
-            int minIndex = i;
-            for(int j = i + 1; j < n; j++){
-                if(codes[j] < codes[minIndex]){
-                    minIndex = j;
-                }
+void selectionSort(std::vector<std::string>& codes){
+    int n = codes.size();
+    for(int i = 0; i < n - 1; i++){
+        int minIndex = i;
+        for(int j = i + 1; j < n; j++){
+            if(codes[j] < codes[minIndex]){
+                minIndex = j;
             }
-            std::swap(codes[minIndex], codes[i]);
         }
+        std::swap(codes[minIndex], codes[i]);
     }
-public:
-    void addFile(const std::string& fileName){
-        namesFiles.push_back(fileName);
+}
+
+void printVector(std::vector<std::string>& codes){
+    for(int i = 0; i < codes.size(); i++){
+        std::cout << codes[i] << std::endl;
+    }
+}
+
+int main(){
+    std::string aux;
+
+    std::vector<std::string> codesMes1;
+    std::vector<std::string> codesMes2;
+    std::vector<std::string> codesMes3;
+    std::vector<std::string> codesMes4;
+    std::vector<std::string> codesMes5;
+
+    std::ifstream fileName1 ("mes_1.txt");
+    std::ifstream fileName2 ("mes_2.txt");
+    std::ifstream fileName3 ("mes_3.txt");
+    std::ifstream fileName4 ("mes_4.txt");
+    std::ifstream fileName5 ("mes_5.txt");
+
+    while(std::getline(fileName1, aux)){
+        codesMes1.insert(codesMes1.end(), aux);
+    }
+    while(std::getline(fileName2, aux)){
+        codesMes2.insert(codesMes2.end(), aux);
+    }
+    while(std::getline(fileName3, aux)){
+        codesMes3.insert(codesMes3.end(), aux);
+    }
+    while(std::getline(fileName4, aux)){
+        codesMes4.insert(codesMes4.end(), aux);
+    }
+    while(std::getline(fileName5, aux)){
+        codesMes5.insert(codesMes5.end(), aux);
     }
 
-    void searchCod(){
-        for(const auto& file : namesFiles){
-            std::ifstream inputFile(file);
+    selectionSort(codesMes1);
+    selectionSort(codesMes2);
+    selectionSort(codesMes3);
+    selectionSort(codesMes4);
+    selectionSort(codesMes5);
 
-            std::string cod;
-            std::vector<std::string> codes;
+    printVector(codesMes1);
+    printVector(codesMes2);
+    printVector(codesMes3);
+    printVector(codesMes4);
+    printVector(codesMes5);
 
-            while(inputFile >> cod){
-                if(cod.size() == 10){
-                    codes.push_back(cod);
-                }
-            }
-            
-            inputFile.close();
+    fileName1.close();
+    fileName2.close();
+    fileName3.close();
+    fileName4.close();
+    fileName5.close();
 
-            selecSort(codes);
-
-            std::cout << "Codigos ordenados em ordem alfabetica do arquivo" << file << ":" <<std::endl;
-            for(const auto& code : codes){
-                std::cout << code <<std::endl;
-            }
-            std::cout << std::endl;
-        }
-        
-    }
-};
-
-int main (){
-    selection fileSearch;
-    std::string nameFile;
-    std::ifstream fileNames("dados.txt");
-
-    while(std::getline(fileNames, nameFile)){
-        fileSearch.addFile(nameFile);
-        std::cout << "Arquivo " << nameFile << " adicionado a lista" << std::endl << std::endl;
-    }
-    fileNames.close();
-
-    fileSearch.searchCod();
 
     return 0;
 }

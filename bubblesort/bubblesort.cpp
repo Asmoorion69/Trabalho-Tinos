@@ -1,66 +1,74 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 #include <string>
-
-class BubbleSort{
-    private: 
-    std::vector<std::string> namesFiles;
-
-    void bubbleSort(std::vector<std::string>& codes){
-        int n = codes.size();
-        for(int i = 0; i < n - 1; i++){
-            for(int j = 0; j < n - i - 1; j++){
-                if(codes[j] > codes[j + 1]){
-                    std::swap(codes[j], codes[j + 1]);
-                }
+ 
+void bubbleSort(std::vector<std::string>& codes){
+    int n = codes.size();
+    for(int i = 0; i < n - 1; i++){
+        for(int j = 0; j < n - i - 1; j++){
+            if(codes[j] > codes[j + 1]){
+                std::swap(codes[j], codes[j + 1]);
             }
         }
-    } 
-    public: 
-    void addFile(const std::string& fileName){
-        namesFiles.push_back(fileName);
     }
+} 
 
-    void searchCod(){
-        for(const auto& file : namesFiles){
-            std::ifstream inputFile(file);
-
-            std::string cod;
-            std::vector<std::string> codes;
-
-            while(inputFile >> cod){
-                if(cod.size() == 10){
-                    codes.push_back(cod);
-                }
-            }
-            inputFile.close();
-
-            bubbleSort(codes);
-
-            std::cout << "Codigos ordenados em ordem alfabetica" << file << ":" << std::endl;
-            for(const auto& code : codes){
-                std::cout << code << std::endl;
-            }
-            std::cout << std::endl;
-        }
+void printVector(std::vector<std::string>& codes){
+    for(int i = 0; i < codes.size(); i++){
+        std::cout << codes[i] << std::endl;
     }
-};
+}
 
 int main(){
-    BubbleSort fileSearch;
-    std::string nameFile;
-    std::ifstream fileNames ("dados.txt");
+    std::string aux;
 
-    while(std::getline(fileNames, nameFile)){
-        fileSearch.addFile(nameFile);
-        std::cout << "Arquivo " << nameFile << " adicionado a lista" << std::endl << std::endl;
+    std::vector<std::string> codesMes1;
+    std::vector<std::string> codesMes2;
+    std::vector<std::string> codesMes3;
+    std::vector<std::string> codesMes4;
+    std::vector<std::string> codesMes5;
+
+    std::ifstream fileName1 ("mes_1.txt");
+    std::ifstream fileName2 ("mes_2.txt");
+    std::ifstream fileName3 ("mes_3.txt");
+    std::ifstream fileName4 ("mes_4.txt");
+    std::ifstream fileName5 ("mes_5.txt");
+
+    while(std::getline(fileName1, aux)){
+        codesMes1.insert(codesMes1.end(), aux);
+    }
+    while(std::getline(fileName2, aux)){
+        codesMes2.insert(codesMes2.end(), aux);
+    }
+    while(std::getline(fileName3, aux)){
+        codesMes3.insert(codesMes3.end(), aux);
+    }
+    while(std::getline(fileName4, aux)){
+        codesMes4.insert(codesMes4.end(), aux);
+    }
+    while(std::getline(fileName5, aux)){
+        codesMes5.insert(codesMes5.end(), aux);
     }
 
-    fileNames.close();
-    
-    fileSearch.searchCod();
+    bubbleSort(codesMes1);
+    bubbleSort(codesMes2);
+    bubbleSort(codesMes3);
+    bubbleSort(codesMes4);
+    bubbleSort(codesMes5);
+
+    printVector(codesMes1);
+    printVector(codesMes2);
+    printVector(codesMes3);
+    printVector(codesMes4);
+    printVector(codesMes5);
+
+    fileName1.close();
+    fileName2.close();
+    fileName3.close();
+    fileName4.close();
+    fileName5.close();
+
 
     return 0;
 }
