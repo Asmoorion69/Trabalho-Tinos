@@ -1,79 +1,95 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 #include <string>
 
-class QuickSort{
-    private:
-    std::vector<std::string> namesFiles;
+int qsort(std::vector<std::string>& array, int low, int high){
+    int i = low, j = high;
+    std::string pivo = array[(low+high)/2], aux;
 
-    int part(std::vector<std::string>& array, int low, int high){
-        std::string pivo = array[high];
-        int i = low - 1;
-
-        for(int j = low; j <= high - 1; j++){
-            if(array[j] <= pivo){
-                i++;
-                std::swap(array[i], array[j]);
-            }
+    do{
+        while(array[i] < pivo){
+            i++;
         }
-        std::swap(array[i + 1], array[high]);
-        return(i + 1);
-
-    }
-
-    void quickSort(std::vector<std::string>& array, int low, int high){
-        if(low < high){
-            int pi = part(array, low, high);
-
-            quickSort(array, low, pi - 1);
-            quickSort(array, pi + 1, high);
+        while(pivo < array[j]){
+            j--;
         }
-    }
-
-    public:
-    void addFile(const std::string& fileName){
-        namesFiles.push_back(fileName);
-    }
-
-    void searchCod(){
-        for(const auto& file : namesFiles){
-            std::ifstream inputFile(file);
-
-            std::string cod;
-            std::vector<std::string> codes;
-
-            while(inputFile >> cod){
-                if(cod.size() == 10){
-                    codes.push_back(cod);
-                }
-            }
-            inputFile.close();
-
-            quickSort(codes, 0, codes.size() - 1);
-
-            std::cout << "Codigos ordenados em ordem alfabetica do arquivo" << file << ":" << std::endl;
-            for(const auto& code : codes){
-                std::cout << code << std::endl;
-            }
-            std::cout << std::endl;
+        if(i<=j){
+            aux = array[i];
+            array[i] = array[j];
+            array[j] = aux;
+            i++;
+            j--;
         }
+    }while(i<=j);
+    if(low < j){
+        qsort(array, low, j);
     }
-};
-
-int  main(){
-    QuickSort fileSearch;
-    std::string nameFile;
-    std::ifstream fileNames("dados.txt");
-
-    while(std::getline(fileNames, nameFile)){
-        fileSearch.addFile(nameFile);
-        std::cout << "Arquivo " <<nameFile << " adicionado a lista" << std::endl;
+    if(i < high){
+        qsort(array, i, high);
     }
-    fileNames.close();
 
-    fileSearch.searchCod();
+    }
+
+void quickSort(std::vector<std::string>& array, int n){
+    qsort(array, 0, n-1);
+}
+
+void printVector(std::vector<std::string>& codes){
+    for(int i = 0; i < codes.size(); i++){
+        std::cout << codes[i] << std::endl;
+    }
+}
+
+int main(){
+    std::string aux;
+
+    std::vector<std::string> codesMes1;
+    std::vector<std::string> codesMes2;
+    std::vector<std::string> codesMes3;
+    std::vector<std::string> codesMes4;
+    std::vector<std::string> codesMes5;
+
+    std::ifstream fileName1 ("mes_1.txt");
+    std::ifstream fileName2 ("mes_2.txt");
+    std::ifstream fileName3 ("mes_3.txt");
+    std::ifstream fileName4 ("mes_4.txt");
+    std::ifstream fileName5 ("mes_5.txt");
+
+    while(std::getline(fileName1, aux)){
+        codesMes1.insert(codesMes1.end(), aux);
+    }
+    while(std::getline(fileName2, aux)){
+        codesMes2.insert(codesMes2.end(), aux);
+    }
+    while(std::getline(fileName3, aux)){
+        codesMes3.insert(codesMes3.end(), aux);
+    }
+    while(std::getline(fileName4, aux)){
+        codesMes4.insert(codesMes4.end(), aux);
+    }
+    while(std::getline(fileName5, aux)){
+        codesMes5.insert(codesMes5.end(), aux);
+    }
+
+    quickSort(codesMes1, codesMes1.size());
+    quickSort(codesMes2, codesMes2.size());
+    quickSort(codesMes3, codesMes3.size());
+    quickSort(codesMes4, codesMes4.size());
+    quickSort(codesMes5, codesMes5.size());
+
+    printVector(codesMes1);
+    printVector(codesMes2);
+    printVector(codesMes3);
+    printVector(codesMes4);
+    printVector(codesMes5);
+
+    fileName1.close();
+    fileName2.close();
+    fileName3.close();
+    fileName4.close();
+    fileName5.close();
+
 
     return 0;
 }

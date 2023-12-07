@@ -1,102 +1,120 @@
 #include<iostream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 #include <string>
 
-class fusao{
-private:
-    std::vector<std::string> namesFiles;
+void merge(std::vector<std::string>& a, int L, int h, int R, std::vector<std::string>& c){
+    int i = L;
+    int j = h + 1;
+    int k = L - 1;
 
-    void merge (std::vector<std::string>& array, int l, int m, int r){
-        int n1 = m - l + 1;
-        int n2 = r - m;
-
-        std::vector<std::string> left(n1), right (n2);
-
-        for(int i = 0; i < n1; i++){
-            left[i] = array[l + 1];
-        }
-
-        for(int j = 0; j < n2; j++){
-            right[j] = array[m + 1 + j];
-        }
-
-        int i = 0;
-        int j = 0;
-        int k = 1;
-
-        while(i < n1 && j < n2){
-            if(left[i] <= right[j]){
-                array[k] = left[j];
-                i++;
-            }else{
-                array[k] = right[j];
-                j++;
-            }
-            k++;
-        }
-        while(i < n1){
-            array[k] = left[i];
+    while(i <= h && j <= R){
+        k++;
+        if(a[i] < a[j]){
+            c[k] = a[i];
             i++;
-            k++;
+        }
+        else{
+            c[k] = a[j];
+            j++;
         }
     }
+    while(i <= h){
+        k++;
+        c[k] = a[i];
+        i++;
+    }
+    while(j <= R){
+        k++;
+        c[k] = a[j];
+        j++;
+    }
+}
 
-    void mergeSort(std::vector<std::string>& array, int l, int r){
-        if(l < r){
-            int m = 1 + (r - l)/2;
-
-            mergeSort(array, l, m);
-            mergeSort(array, m + 1, r);
-
-            merge(array, l, m, r);
+void mpass(std::vector<std::string>& a, int n, int p, std::vector<std::string>& c){
+    int i = 0;
+    while(i <= n - 2 * p){
+        merge(a, i, i + p - 1, i + 2 * p - 1, c);
+        i = i + 2 * p;
+    }
+    if(i + p - 1 < n){
+        merge(a, i, i + p - 1, n - 1, c);
+    }
+    else{
+        for(int j = i; j <= n - 1; j++){
+            c[j] = a[j];
         }
     }
+}
 
-public:
-    void addFile(const std::string& fileName){
-        namesFiles.push_back(fileName);
+void mergeSort(std::vector<std::string>& a){
+    std::vector<std::string> c;
+    c.resize(a.size());
+    int n = a.size();
+    int p = 1;
+    
+    while(p < n){
+        mpass(a, n, p , c);
+        p *= 2;
+        mpass(c, n, p, a);
+        p *= 2;
+    }
+}
+
+void printVector(std::vector<std::string>& codes){
+    for(int i = 0; i < codes.size(); i++){
+        std::cout << codes[i] << std::endl;
+    }
+}
+
+int main(){
+    std::string aux;
+
+    std::vector<std::string> codesMes1;
+    std::vector<std::string> codesMes2;
+    std::vector<std::string> codesMes3;
+    std::vector<std::string> codesMes4;
+    std::vector<std::string> codesMes5;
+
+    std::ifstream fileName1 ("mes_1.txt");
+    std::ifstream fileName2 ("mes_2.txt");
+    std::ifstream fileName3 ("mes_3.txt");
+    std::ifstream fileName4 ("mes_4.txt");
+    std::ifstream fileName5 ("mes_5.txt");
+
+    while(std::getline(fileName1, aux)){
+        codesMes1.insert(codesMes1.end(), aux);
+    }
+    while(std::getline(fileName2, aux)){
+        codesMes2.insert(codesMes2.end(), aux);
+    }
+    while(std::getline(fileName3, aux)){
+        codesMes3.insert(codesMes3.end(), aux);
+    }
+    while(std::getline(fileName4, aux)){
+        codesMes4.insert(codesMes4.end(), aux);
+    }
+    while(std::getline(fileName5, aux)){
+        codesMes5.insert(codesMes5.end(), aux);
     }
 
-    void searchCod(){
-        for(const auto& file : namesFiles){
-            std::ifstream inputeFile(file);
+    mergeSort(codesMes1);
+    mergeSort(codesMes2);
+    mergeSort(codesMes3);
+    mergeSort(codesMes4);
+    mergeSort(codesMes5);
 
-            std::string cod;
-            std::vector<std::string> codes;
+    printVector(codesMes1);
+    printVector(codesMes2);
+    printVector(codesMes3);
+    printVector(codesMes4);
+    printVector(codesMes5);
 
-            while(inputeFile >> cod){
-                if(cod.size() == 10){
-                    codes.push_back(cod);
-                }
-            }
-
-            inputeFile.close();
-
-            mergeSort(codes, 0, codes.size() - 1);
-
-            std::cout << "Codigos ordenados em ordem alfabetica" << file << ":" <<std::endl;
-            for(const auto& code : codes){
-                std::cout << code << std::endl;
-            }
-            std::cout << std::endl;
-        }
-    }
-};
-
-int main (){
-    fusao fileSearch;
-    std::string nameFile;
-    std::ifstream fileNames("dados.txt");
-
-    while(std::getline(fileNames, nameFile)){
-        fileSearch.addFile(nameFile);
-        std::cout << "Arquivo " << nameFile << " adicionado a lista" << std::endl;
-    }
-    fileNames.close();
-
-    fileSearch.searchCod();
+    fileName1.close();
+    fileName2.close();
+    fileName3.close();
+    fileName4.close();
+    fileName5.close();
 
     return 0;
 }

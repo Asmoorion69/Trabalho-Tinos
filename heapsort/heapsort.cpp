@@ -1,86 +1,94 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include<algorithm>
 #include <string>
 
-class HeapSort{
-    private:
-    std::vector<std::string> namesFiles;
+void heapify(std::vector<std::string>& array, int L, int R){
+    int i = L;
+    int j = 2 * L;
+    std::string x = array[L];
 
-    void heap(std::vector<std::string>& array, int n, int i){
-        int large = i;
-        int left = 2 * i + 1;
-        int rigth = 2 * i + 2;
-
-        if(left < n && array[left] > array[large]){
-            large = left;
-        }
-
-        if(rigth < n && array[rigth] > array[large]){
-            large = rigth;
-        }
-
-        if(large != 1){
-            std::swap(array[i], array[large]);
-            heap(array, n, large);
+    if (j < R && array[j] < array[j + 1]) {
+        j++;
+    }
+    while ((j <= R) && (x < array[j])) {
+        array[i] = array[j];
+        i = j;
+        j = 2*j;
+       if (j < R && array[j] < array[j + 1]) {
+            j++;
         }
     }
+        
+    array[i] = x;
+}
 
-    void heapSort(std::vector<std::string>& array){
-        int n = array.size();
+void heapSort(std::vector<std::string>& array, int n){
+    for(int L = n/2; L >= 0; L--){
+        heapify(array, L, n);
+    }
+    for(int R = n-1; R >= 1; R--){
+        std::string w = array[0];
+        array[0] = array[R];
+        array[R] = w;
+        heapify(array, 0, R-1);
+    }
+}
 
-        for(int i = n / 2 - 1; i >= 0; i--){
-            heap(array, n, i);
-        }
-        for(int i = n - 1; i > 0; i--){
-            std::swap(array[0], array[i]);
-            heap(array, i, 0);
-        }
+void printVector(std::vector<std::string>& codes){
+    for(int i = 0; i < codes.size(); i++){
+        std::cout << codes[i] << std::endl;
+    }
+}
+
+int main(){
+    std::string aux;
+
+    std::vector<std::string> codesMes1;
+    std::vector<std::string> codesMes2;
+    std::vector<std::string> codesMes3;
+    std::vector<std::string> codesMes4;
+    std::vector<std::string> codesMes5;
+
+    std::ifstream fileName1 ("mes_1.txt");
+    std::ifstream fileName2 ("mes_2.txt");
+    std::ifstream fileName3 ("mes_3.txt");
+    std::ifstream fileName4 ("mes_4.txt");
+    std::ifstream fileName5 ("mes_5.txt");
+
+    while(std::getline(fileName1, aux)){
+        codesMes1.insert(codesMes1.end(), aux);
+    }
+    while(std::getline(fileName2, aux)){
+        codesMes2.insert(codesMes2.end(), aux);
+    }
+    while(std::getline(fileName3, aux)){
+        codesMes3.insert(codesMes3.end(), aux);
+    }
+    while(std::getline(fileName4, aux)){
+        codesMes4.insert(codesMes4.end(), aux);
+    }
+    while(std::getline(fileName5, aux)){
+        codesMes5.insert(codesMes5.end(), aux);
     }
 
-    public:
-    void addFile(const std::string& fileName){
-        namesFiles.push_back(fileName);
-    }
+    heapSort(codesMes1, codesMes1.size());
+    heapSort(codesMes2, codesMes2.size());
+    heapSort(codesMes3, codesMes3.size());
+    heapSort(codesMes4, codesMes4.size());
+    heapSort(codesMes5, codesMes5.size());
 
-    void searchCod(){
-        for(const auto& file : namesFiles){
-            std::ifstream inputFiles(file);
+    printVector(codesMes1);
+    printVector(codesMes2);
+    printVector(codesMes3);
+    printVector(codesMes4);
+    printVector(codesMes5);
 
-            std::string cod;
-            std::vector<std::string> codes;
-
-            while(inputFiles >> cod){
-                if(cod.size() == 10){
-                    codes.push_back(cod);
-                }
-            }
-            inputFiles.close();
-
-            heapSort(codes);
-
-            std::cout << "Codigos ordenados em ordem alfabetica" << file << ":" << std::endl;
-            for(const auto& cod : codes){
-                std::cout << cod << std::endl;
-            }
-            std::cout << std::endl;
-        }
-    }
-};
-
-int main (){
-    HeapSort fileSearch;
-    std::string nameFile;
-    std::ifstream fileNames("dados.txt");
-
-    while(std::getline(fileNames, nameFile)){
-        fileSearch.addFile(nameFile);
-        std::cout << "Arquivo " << nameFile << " adicionado a lista" << std::endl;
-    }
-    fileNames.close();
-
-    fileSearch.searchCod();
+    fileName1.close();
+    fileName2.close();
+    fileName3.close();
+    fileName4.close();
+    fileName5.close();
 
     return 0;
 }
