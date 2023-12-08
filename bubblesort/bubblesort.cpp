@@ -3,13 +3,18 @@
 #include <vector>
 #include <string>
  
-void bubbleSort(std::vector<std::string>& codes){
+void bubbleSort(std::vector<std::string>& codes, int *com, int *mov){
     int n = codes.size();
-    for(int i = 0; i < n - 1; i++){
-        for(int j = 0; j < n - i - 1; j++){
-            if(codes[j] > codes[j + 1]){
-                std::swap(codes[j], codes[j + 1]);
+    std::string aux;
+    for(int i = 1; i < n; i++){
+        for(int j = n - 1; j >= i; j--){
+            if(codes[j - 1] > codes[j]){
+                aux = codes[j - 1];
+                codes[j - 1] = codes[j];
+                codes[j] = aux;
+                (*mov)++;
             }
+            (*com)++;
         }
     }
 } 
@@ -22,6 +27,8 @@ void printVector(std::vector<std::string>& codes){
 
 int main(){
     std::string aux;
+    int comparacoes[5] = {};
+    int movimentacoes[5] = {};
 
     std::vector<std::string> codesMes1;
     std::vector<std::string> codesMes2;
@@ -51,17 +58,24 @@ int main(){
         codesMes5.insert(codesMes5.end(), aux);
     }
 
-    bubbleSort(codesMes1);
-    bubbleSort(codesMes2);
-    bubbleSort(codesMes3);
-    bubbleSort(codesMes4);
-    bubbleSort(codesMes5);
+    bubbleSort(codesMes1, &comparacoes[0], &movimentacoes[0]);
+    bubbleSort(codesMes2, &comparacoes[1], &movimentacoes[1]);
+    bubbleSort(codesMes3, &comparacoes[2], &movimentacoes[2]);
+    bubbleSort(codesMes4, &comparacoes[3], &movimentacoes[3]);
+    bubbleSort(codesMes5, &comparacoes[4], &movimentacoes[4]);
 
     printVector(codesMes1);
     printVector(codesMes2);
     printVector(codesMes3);
     printVector(codesMes4);
     printVector(codesMes5);
+    std::cout << std::endl;
+
+    for(int i = 0; i < 5; i++){
+        std::cout << "Para mes " << i+1 << ":" << std::endl;
+        std::cout << "Comparacoes: " << comparacoes[i] << std::endl;
+        std::cout << "Movimentacoes: " << movimentacoes[i] << std::endl << std::endl;
+    }
 
     fileName1.close();
     fileName2.close();

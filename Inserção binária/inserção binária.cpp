@@ -3,27 +3,31 @@
 #include <vector>
 #include <string>
 
-void insertBinarySort(std::vector<std::string>& codes){
+void insertBinarySort(std::vector<std::string>& codes, int* comp, int* mov){
     int n = codes.size();
     for(int i = 1; i < n; i++){
         std::string key = codes[i];
         int left = 0;
-        int right = i - 1;
+        int right = i;
 
-        while(left <= right){
-            int mid = left + (right - left) / 2;
+        while(left < right){
+            int mid = (right + left) / 2;
 
-            if(codes[mid] < key){
+            if(codes[mid] <= key){
                 left = mid + 1;
             }else{
-                right = mid - 1;
+                right = mid;
             }
+            (*comp)++;
         }
-
-        for(int j = i - 1; j >= left; j--){
-            codes[j + 1] = codes[j];
+        int j = i;
+        while(j > right){
+            codes[j] = codes[j-1];
+            (*mov)++;
+            j--;
         }
-        codes[left] = key;
+        codes[right] = key;
+        (*mov)++;
     }
 }
 
@@ -35,6 +39,8 @@ void printVector(std::vector<std::string>& codes){
 
 int main(){
     std::string aux;
+    int comparacoes[5] = {};
+    int movimentacoes[5] = {};
 
     std::vector<std::string> codesMes1;
     std::vector<std::string> codesMes2;
@@ -64,17 +70,24 @@ int main(){
         codesMes5.insert(codesMes5.end(), aux);
     }
 
-    insertBinarySort(codesMes1);
-    insertBinarySort(codesMes2);
-    insertBinarySort(codesMes3);
-    insertBinarySort(codesMes4);
-    insertBinarySort(codesMes5);
+    insertBinarySort(codesMes1, &comparacoes[0], &movimentacoes[0]);
+    insertBinarySort(codesMes2, &comparacoes[1], &movimentacoes[1]);
+    insertBinarySort(codesMes3, &comparacoes[2], &movimentacoes[2]);
+    insertBinarySort(codesMes4, &comparacoes[3], &movimentacoes[3]);
+    insertBinarySort(codesMes5, &comparacoes[4], &movimentacoes[4]);
 
     printVector(codesMes1);
     printVector(codesMes2);
     printVector(codesMes3);
     printVector(codesMes4);
     printVector(codesMes5);
+    std::cout << std::endl;
+
+    for(int i = 0; i < 5; i++){
+        std::cout << "Para mes " << i+1 << ":" << std::endl;
+        std::cout << "Comparacoes: " << comparacoes[i] << std::endl;
+        std::cout << "Movimentacoes: " << movimentacoes[i] << std::endl << std::endl;
+    }
 
     fileName1.close();
     fileName2.close();

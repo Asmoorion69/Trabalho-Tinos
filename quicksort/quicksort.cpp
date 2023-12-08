@@ -3,36 +3,41 @@
 #include <vector>
 #include <string>
 
-int qsort(std::vector<std::string>& array, int low, int high){
+int qsort(std::vector<std::string>& array, int low, int high, int* comp, int* mov){
     int i = low, j = high;
     std::string pivo = array[(low+high)/2], aux;
 
     do{
         while(array[i] < pivo){
+            (*comp)++;
             i++;
         }
+        (*comp)++;
         while(pivo < array[j]){
+            (*comp)++;
             j--;
         }
+        (*comp)++;
         if(i<=j){
             aux = array[i];
             array[i] = array[j];
             array[j] = aux;
+            (*mov)++;
             i++;
             j--;
         }
     }while(i<=j);
     if(low < j){
-        qsort(array, low, j);
+        qsort(array, low, j, comp, mov);
     }
     if(i < high){
-        qsort(array, i, high);
+        qsort(array, i, high, comp, mov);
     }
 
     }
 
-void quickSort(std::vector<std::string>& array, int n){
-    qsort(array, 0, n-1);
+void quickSort(std::vector<std::string>& array, int n, int* comp, int* mov){
+    qsort(array, 0, n-1, comp, mov);
 }
 
 void printVector(std::vector<std::string>& codes){
@@ -43,6 +48,8 @@ void printVector(std::vector<std::string>& codes){
 
 int main(){
     std::string aux;
+    int comparacoes[5] = {};
+    int movimentacoes[5] = {};
 
     std::vector<std::string> codesMes1;
     std::vector<std::string> codesMes2;
@@ -72,17 +79,24 @@ int main(){
         codesMes5.insert(codesMes5.end(), aux);
     }
 
-    quickSort(codesMes1, codesMes1.size());
-    quickSort(codesMes2, codesMes2.size());
-    quickSort(codesMes3, codesMes3.size());
-    quickSort(codesMes4, codesMes4.size());
-    quickSort(codesMes5, codesMes5.size());
+    quickSort(codesMes1, codesMes1.size(), &comparacoes[0], &movimentacoes[0]);
+    quickSort(codesMes2, codesMes2.size(), &comparacoes[1], &movimentacoes[1]);
+    quickSort(codesMes3, codesMes3.size(), &comparacoes[2], &movimentacoes[2]);
+    quickSort(codesMes4, codesMes4.size(), &comparacoes[3], &movimentacoes[3]);
+    quickSort(codesMes5, codesMes5.size(), &comparacoes[4], &movimentacoes[4]);
 
     printVector(codesMes1);
     printVector(codesMes2);
     printVector(codesMes3);
     printVector(codesMes4);
     printVector(codesMes5);
+    std::cout << std::endl;
+
+    for(int i = 0; i < 5; i++){
+        std::cout << "Para mes " << i+1 << ":" << std::endl;
+        std::cout << "Comparacoes: " << comparacoes[i] << std::endl;
+        std::cout << "Movimentacoes: " << movimentacoes[i] << std::endl << std::endl;
+    }
 
     fileName1.close();
     fileName2.close();

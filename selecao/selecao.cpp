@@ -3,16 +3,21 @@
 #include <vector>
 #include <string>
 
-void selectionSort(std::vector<std::string>& codes){
+void selectionSort(std::vector<std::string>& codes, int *comp, int *mov){
     int n = codes.size();
+    std::string aux;
     for(int i = 0; i < n - 1; i++){
         int minIndex = i;
         for(int j = i + 1; j < n; j++){
             if(codes[j] < codes[minIndex]){
                 minIndex = j;
             }
+            (*comp)++;
         }
-        std::swap(codes[minIndex], codes[i]);
+        aux = codes[i];
+        codes[i] = codes[minIndex];
+        codes[minIndex] = aux;
+        (*mov)++;
     }
 }
 
@@ -24,6 +29,8 @@ void printVector(std::vector<std::string>& codes){
 
 int main(){
     std::string aux;
+    int comparacoes[5] = {};
+    int movimentacoes[5] = {};
 
     std::vector<std::string> codesMes1;
     std::vector<std::string> codesMes2;
@@ -53,17 +60,24 @@ int main(){
         codesMes5.insert(codesMes5.end(), aux);
     }
 
-    selectionSort(codesMes1);
-    selectionSort(codesMes2);
-    selectionSort(codesMes3);
-    selectionSort(codesMes4);
-    selectionSort(codesMes5);
+    selectionSort(codesMes1, &comparacoes[0], &movimentacoes[0]);
+    selectionSort(codesMes2, &comparacoes[1], &movimentacoes[1]);
+    selectionSort(codesMes3, &comparacoes[2], &movimentacoes[2]);
+    selectionSort(codesMes4, &comparacoes[3], &movimentacoes[3]);
+    selectionSort(codesMes5, &comparacoes[4], &movimentacoes[4]);
 
     printVector(codesMes1);
     printVector(codesMes2);
     printVector(codesMes3);
     printVector(codesMes4);
     printVector(codesMes5);
+    std::cout << std::endl;
+
+    for(int i = 0; i < 5; i++){
+        std::cout << "Para mes " << i+1 << ":" << std::endl;
+        std::cout << "Comparacoes: " << comparacoes[i] << std::endl;
+        std::cout << "Movimentacoes: " << movimentacoes[i] << std::endl << std::endl;
+    }
 
     fileName1.close();
     fileName2.close();
