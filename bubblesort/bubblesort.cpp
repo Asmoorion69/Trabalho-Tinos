@@ -12,7 +12,7 @@ void bubbleSort(std::vector<std::string>& codes, int *com, int *mov){
                 aux = codes[j - 1];
                 codes[j - 1] = codes[j];
                 codes[j] = aux;
-                (*mov)++;
+                (*mov) += 3;
             }
             (*com)++;
         }

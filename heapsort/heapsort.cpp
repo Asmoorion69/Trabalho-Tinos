@@ -35,7 +35,7 @@ void heapSort(std::vector<std::string>& array, int n, int* comp, int* mov){
         std::string w = array[0];
         array[0] = array[R];
         array[R] = w;
-        (*mov)++;
+        (*mov) += 3;
         heapify(array, 0, R-1, comp, mov);
     }
 }

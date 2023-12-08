@@ -6,9 +6,9 @@
 void selectionSort(std::vector<std::string>& codes, int *comp, int *mov){
     int n = codes.size();
     std::string aux;
-    for(int i = 0; i < n - 1; i++){
+    for(int i = 0; i < n - 2; i++){
         int minIndex = i;
-        for(int j = i + 1; j < n; j++){
+        for(int j = i + 1; j < n - 1; j++){
             if(codes[j] < codes[minIndex]){
                 minIndex = j;
             }
@@ -17,7 +17,7 @@ void selectionSort(std::vector<std::string>& codes, int *comp, int *mov){
         aux = codes[i];
         codes[i] = codes[minIndex];
         codes[minIndex] = aux;
-        (*mov)++;
+        (*mov) += 3;
     }
 }
 

@@ -22,7 +22,7 @@ int qsort(std::vector<std::string>& array, int low, int high, int* comp, int* mo
             aux = array[i];
             array[i] = array[j];
             array[j] = aux;
-            (*mov)++;
+            (*mov) += 3;
             i++;
             j--;
         }
