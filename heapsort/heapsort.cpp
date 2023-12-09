@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 
+//Transforma o vetor em um heap
 void heapify(std::vector<std::string>& array, int L, int R, int* comp, int* mov){
     int i = L;
     int j = 2 * L;
@@ -27,6 +28,7 @@ void heapify(std::vector<std::string>& array, int L, int R, int* comp, int* mov)
     (*mov)++;
 }
 
+//Ordena o vetor usando o algoritmo Heap Sort
 void heapSort(std::vector<std::string>& array, int n, int* comp, int* mov){
     for(int L = n/2; L >= 0; L--){
         heapify(array, L, n, comp, mov);
@@ -40,17 +42,20 @@ void heapSort(std::vector<std::string>& array, int n, int* comp, int* mov){
     }
 }
 
+//Imprime os elementos do vetor de strings
 void printVector(std::vector<std::string>& codes){
     for(int i = 0; i < codes.size(); i++){
         std::cout << codes[i] << std::endl;
     }
 }
 
+//Le os códigos dos arquivos mes_i
 int main(){
     std::string aux;
     int comparacoes[5] = {};
     int movimentacoes[5] = {};
 
+//Armazena os códigos em vetores separados para cada mes
     std::vector<std::string> codesMes1;
     std::vector<std::string> codesMes2;
     std::vector<std::string> codesMes3;
@@ -78,13 +83,14 @@ int main(){
     while(std::getline(fileName5, aux)){
         codesMes5.insert(codesMes5.end(), aux);
     }
-
+//Ordena os códigos de cada mes usando o algoritmo de HeapSort
     heapSort(codesMes1, codesMes1.size(), &comparacoes[0], &movimentacoes[0]);
     heapSort(codesMes2, codesMes2.size(), &comparacoes[1], &movimentacoes[1]);
     heapSort(codesMes3, codesMes3.size(), &comparacoes[2], &movimentacoes[2]);
     heapSort(codesMes4, codesMes4.size(), &comparacoes[3], &movimentacoes[3]);
     heapSort(codesMes5, codesMes5.size(), &comparacoes[4], &movimentacoes[4]);
 
+//Imprime os cpodigos ordenados de cada mes
     printVector(codesMes1);
     printVector(codesMes2);
     printVector(codesMes3);
@@ -92,6 +98,7 @@ int main(){
     printVector(codesMes5);
     std::cout << std::endl;
 
+//Exibe o numero de comparaçoes e movimentaçoes realizadas em cada ordenaçã
     for(int i = 0; i < 5; i++){
         std::cout << "Para mes " << i+1 << ":" << std::endl;
         std::cout << "Comparacoes: " << comparacoes[i] << std::endl;

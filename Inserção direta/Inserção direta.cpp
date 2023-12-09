@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 
+//Implementa o algoritimo de inserção direta para ordenar o vetor de strings
 void insertionSort(std::vector<std::string>& codes, int* comp, int* mov){
     int n = codes.size();
     for(int i = 1; i < n; i++){
@@ -21,17 +22,20 @@ void insertionSort(std::vector<std::string>& codes, int* comp, int* mov){
     }
 }
 
+//Imprime os elementos do vetor de strings
 void printVector(std::vector<std::string>& codes){
     for(int i = 0; i < codes.size(); i++){
         std::cout << codes[i] << std::endl;
     }
 }
 
+//Le os códigos dos arquivos mes_i
 int main(){
     std::string aux;
     int comparacoes[5] = {};
     int movimentacoes[5] = {};
 
+//Armazena os códigos em vetores separados para cada mes
     std::vector<std::string> codesMes1;
     std::vector<std::string> codesMes2;
     std::vector<std::string> codesMes3;
@@ -60,12 +64,14 @@ int main(){
         codesMes5.insert(codesMes5.end(), aux);
     }
 
+//Ordena os códigos de cada mes usando o algoritmo de inserção direta
     insertionSort(codesMes1, &comparacoes[0], &movimentacoes[0]);
     insertionSort(codesMes2, &comparacoes[1], &movimentacoes[1]);
     insertionSort(codesMes3, &comparacoes[2], &movimentacoes[2]);
     insertionSort(codesMes4, &comparacoes[3], &movimentacoes[3]);
     insertionSort(codesMes5, &comparacoes[4], &movimentacoes[4]);
 
+//Imprime os códigos ordenados de cada mes
     printVector(codesMes1);
     printVector(codesMes2);
     printVector(codesMes3);
@@ -73,6 +79,7 @@ int main(){
     printVector(codesMes5);
     std::cout << std::endl;
 
+//Exibe o numero de comparaçoes e movimentações realizadas em cada ordenação
     for(int i = 0; i < 5; i++){
         std::cout << "Para mes " << i+1 << ":" << std::endl;
         std::cout << "Comparacoes: " << comparacoes[i] << std::endl;

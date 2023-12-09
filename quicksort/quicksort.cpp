@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 
+//Implementa o algoritmo de Quick Sort de forma recursiva para ordenar o vetor de strings
 int qsort(std::vector<std::string>& array, int low, int high, int* comp, int* mov){
     int i = low, j = high;
     std::string pivo = array[(low+high)/2], aux;
@@ -36,21 +37,24 @@ int qsort(std::vector<std::string>& array, int low, int high, int* comp, int* mo
 
     }
 
+//Chama o Quick Sort para ordenar o vetor de strings
 void quickSort(std::vector<std::string>& array, int n, int* comp, int* mov){
     qsort(array, 0, n-1, comp, mov);
 }
 
+//Imprime os elementos do vetor de strings
 void printVector(std::vector<std::string>& codes){
     for(int i = 0; i < codes.size(); i++){
         std::cout << codes[i] << std::endl;
     }
 }
 
+//Le os códigos dos arquivos mes_i
 int main(){
     std::string aux;
     int comparacoes[5] = {};
     int movimentacoes[5] = {};
-
+//Armazena os códigos em  vetores separados para cada mes
     std::vector<std::string> codesMes1;
     std::vector<std::string> codesMes2;
     std::vector<std::string> codesMes3;
@@ -78,13 +82,14 @@ int main(){
     while(std::getline(fileName5, aux)){
         codesMes5.insert(codesMes5.end(), aux);
     }
-
+//Ordena os códigos de cada mes usando o algoritmo de Quick Sort
     quickSort(codesMes1, codesMes1.size(), &comparacoes[0], &movimentacoes[0]);
     quickSort(codesMes2, codesMes2.size(), &comparacoes[1], &movimentacoes[1]);
     quickSort(codesMes3, codesMes3.size(), &comparacoes[2], &movimentacoes[2]);
     quickSort(codesMes4, codesMes4.size(), &comparacoes[3], &movimentacoes[3]);
     quickSort(codesMes5, codesMes5.size(), &comparacoes[4], &movimentacoes[4]);
 
+//Imprime os có´digos ordenados de cada mes
     printVector(codesMes1);
     printVector(codesMes2);
     printVector(codesMes3);
@@ -92,6 +97,7 @@ int main(){
     printVector(codesMes5);
     std::cout << std::endl;
 
+//Exibe o número de comparacoes e movimentaçoes realizadas em cada ordenação 
     for(int i = 0; i < 5; i++){
         std::cout << "Para mes " << i+1 << ":" << std::endl;
         std::cout << "Comparacoes: " << comparacoes[i] << std::endl;
